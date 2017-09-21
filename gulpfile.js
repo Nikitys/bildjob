@@ -3,8 +3,9 @@ const del = require('del');
 const browserSync = require('browser-sync').create();
 const pug = require('gulp-pug');
 const plumber = require('gulp-plumber');
-
-
+const notify = require('gulp-notify');
+//images
+const imagemin = require('gulp-imagemin');
 
 // styles 
 const sass = require('gulp-sass');
@@ -46,6 +47,11 @@ const paths = {
 // pug
 function templates() {
     return gulp.src('./src/templates/pages/*.pug')
+        .pipe(plumber({
+            errorHandler: notify.onError(function (err) {
+                return {title: 'HTML(PUG) посмотри плуг', message: err.message}
+            })
+        }))
         .pipe(pug({ pretty: true }))
         .pipe(gulp.dest(paths.root));
 }
@@ -53,7 +59,11 @@ function templates() {
 // scss
 function styles() {
     return gulp.src('./src/styles/app.scss')
-        .pipe(plumber())
+        .pipe(plumber({
+            errorHandler: notify.onError(function (err) {
+                return {title: 'Стили посмотри плуг', message: err.message}
+            })
+        }))
         .pipe(sourcemaps.init())
         .pipe(sass({outputStyle: 'compressed'}))
         .pipe(cssunit({
@@ -84,6 +94,7 @@ function clean() {
 // просто переносим картинки
 function images() {
     return gulp.src(paths.images.src)
+            .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))
           .pipe(gulp.dest(paths.images.dest));
 }
 
@@ -124,3 +135,4 @@ gulp.task('default', gulp.series(
     gulp.parallel(styles, scripts, templates, images, fonts),
     gulp.parallel(watch, server)
 ));
+gulp.task('build',gulp.series(clean,styles,scripts, templates, images, fonts));
