@@ -1,0 +1,32 @@
+extends ../template
+
+block variables
+  - var title = 'Добро пожаловать'
+
+block content
+  .main
+    .main-block
+      form.main-block-form(action="")
+        .main-block-form__title Авторизуйтесь
+        .main-block-form-input
+          label.main-block-form-input-label(for="login")
+            i.fa.fa-user(aria-hidden="true")
+          input.main-block-form-input__in(id="login",placeholder='Логин')
+        .main-block-form-input
+          label.main-block-form-input-label(for="paswword")
+            i.fa.fa-key(aria-hidden="true")
+          input.main-block-form-input__in(id="password",placeholder='Пароль')
+        .main-block-form-check
+          input.main-block-form-check__checkbox(type='checkbox',id='people', required)
+          label.main-block-form-check__label(for='people') Я человек
+        .main-block-form-radio
+          .main-block-form-radio__title Вы точно не робот?
+          .main-block-form-radio-item
+            input.main-block-form-radio-item__but(type='radio', id='yes',name='radio')
+            label.main-block-form-radio-item__desc(for='yes',) Да
+          .main-block-form-radio-item
+            input.main-block-form-radio-item__but(type='radio', id='No',name='radio')
+            label.main-block-form-radio-item__desc(for='No',) Не уверен
+        .main-block-form-footer
+          button.main-block-form-footer-but На главную
+          button.main-block-form-footer-but Войти
